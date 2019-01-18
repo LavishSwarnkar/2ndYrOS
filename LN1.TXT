@@ -1,0 +1,15 @@
+CPU Scheduling
+Criteria:-
+1. CPU Utilization (all time busy)
+2. Throughput
+3. Turn Around Time (time interval between
+   submission of process & execution of process)
+4. Waiting Time (time for which process waits)
+5. Response Time (time of first reponse of CPU)
+
+2 Types:
+1. Non Preemptive
+2. Preemptive
+
+Algorithms:-
+1. FCFS(First Come First Serve)
