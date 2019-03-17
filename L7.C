@@ -1,25 +1,19 @@
 //Round Robin Algo
 #include<stdio.h>
 #include<conio.h>
-int jobQueue[20]={0}, isFirst=1;
+int jobQueue[30]={0}, front=-1, rear=-1;
 struct process
 { 	int AT, BT, BT_copy, CT, TA, WT, last_time;
 };
 int getNextJob(struct process pro[20], int time, int size, int tq)
-{   int i, j, k, curr;
-	if(isFirst)
+{   int i, curr;
+	if(front==-1)
 	{   jobQueue[0]=1;
-		isFirst=0;
+		front=rear=0;
 	}
 
-	printf("\nAt t=%d: ", time);
-	for(j=0 ; j<10 ; j++)
-		printf("%d, ", jobQueue[j]);
-	getch();
-
-	for(i=0 ; jobQueue[i]==0 && i<19 ; i++);
-	curr=jobQueue[i];
-	jobQueue[i]=0;
+	curr=jobQueue[front];
+	jobQueue[front++]=0;
 
 	if(curr==0)
 		return -1;
@@ -34,14 +28,12 @@ int getNextJob(struct process pro[20], int time, int size, int tq)
 	}
 	time+=pro[curr].last_time;
 
-	for(k=curr ; jobQueue[k]!=0 ; k++);
-
-	for(j=curr+1 ; j<=size ; j++)
-		if(pro[j].AT<=time && pro[j].BT>0 && !contains(jobQueue, j))
-			jobQueue[k++]=j;
+	for(i=curr+1 ; i<=size ; i++)
+		if(pro[i].AT<=time && pro[i].BT>0 && !contains(jobQueue, i))
+			jobQueue[++rear]=i;
 
 	if(pro[curr].BT>0)
-		jobQueue[k++]=curr;
+		jobQueue[++rear]=curr;
 
 	return curr;
 }
@@ -81,8 +73,8 @@ void main()
 			pro[j].CT = time;
 		}
 		else
-		{	break;
-		}
+			break;
+
 	}
 
 	printf("\nProcess\tAT\tBT\tCT\tTA\tWT\n");
@@ -91,7 +83,7 @@ void main()
 		pro[i].WT = pro[i].TA-pro[i].BT_copy;
 		avgTA+=pro[i].TA;
 		avgWT+=pro[i].WT;
-		printf("P%d\t%d\t%d\t%d\t%d\t%d\n"
+		printf("P%d\t%2d\t%d\t%2d\t%2d\t%2d\n"
 			, i, pro[i].AT, pro[i].BT_copy, pro[i].CT, pro[i].TA, pro[i].WT);
 	}
 
@@ -103,4 +95,3 @@ void main()
 
 	getch();
 }
-
